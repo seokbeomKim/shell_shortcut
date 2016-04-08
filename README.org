@@ -2,10 +2,7 @@
   Simple script to use shortcuts in terminal environment.
 
 ** SCREENSHOTS
-   [[https://github.com/seokbeomKim/shell_shortcut/blob/screenshot/screenshot1.png]]
-   [[https://github.com/seokbeomKim/shell_shortcut/blob/screenshot/screenshot2.png]]
-   [[https://github.com/seokbeomKim/shell_shortcut/blob/screenshot/screenshot3.png]]
-   [[https://github.com/seokbeomKim/shell_shortcut/blob/screenshot/screenshot5.png]]
+   [[https://github.com/seokbeomKim/shell_shortcut/blob/screenshot/shell_shortcut.gif]]
 
 ** USAGE
 *** Set *path_shortcut* file
