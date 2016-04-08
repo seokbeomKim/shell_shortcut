@@ -7,6 +7,8 @@
 # Files: bin_shortcut (shell script), path_shortcut (category, path configuration),
 #        config_shortcut (configuration file)
 
+# If the terminal is not opened, please change the following value as terminal name 
+# e.g. xterm, terminator, ..., and so on.
 TERMINAL=$COLORTERM
 
 # Please set following value within absolute paths.
