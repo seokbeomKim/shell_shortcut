@@ -1,10 +1,32 @@
 * SHELL SHORTCUT
-  Simple shell script to use shortcuts in terminal environment.
+  Simple script to use shortcuts in terminal environment.
 
-** Files
-   - bin_shortcut: main script file
-   - config_shortcut: configuration file
-   - path_shortcut: shorcuts list
+** SCREENSHOTS
+   [[https://github.com/seokbeomKim/shell_shortcut/blob/screenshot/screenshot1.png]]
+   [[https://github.com/seokbeomKim/shell_shortcut/blob/screenshot/screenshot2.png]]
+   [[https://github.com/seokbeomKim/shell_shortcut/blob/screenshot/screenshot3.png]]
+   [[https://github.com/seokbeomKim/shell_shortcut/blob/screenshot/screenshot5.png]]
 
-** Usage
+** USAGE
+*** Set *path_shortcut* file
+Put your own categories and organize shortcuts as what you want.
+
+Example)
+$ cat path_shortcut
+Kernel:/home/chaoxifer/workspace/LinuxKernel
+Document:/home/chaoxifer/Documents/Org
+Picture:/home/chaoxifer/Pictures/
+MY_HDD:/run/media/chaoxifer/EX_EXT4
+*** Modify *bin_shortcut* file
+In the bin_shortcut file, set values *CONFIG_FILE* and *PATH_FILE* with absolute path of 'config_shortcut' and 'path_shortcut'. 
+*** Test *bin_shortcut* 
+You can move around with vim keymap (H,J,K,L). If you want to exit the script, press *q*. 
+#+BEGIN_SRC bash
+$ bin_shortcut -l
+#+END_SRC
+*** Set aliasa to run script easily
+If you want to run this script easily, set the alias for it like following example:
+#+BEGIN_SRC bash
+echo 'alias s="bin_shortcut -l"' >> ~/.zshrc # If you use bash shell, replace .zshrc to .bashrc . Also, you should make sure that bin_script is placed in $PATH directory. 
+#+END_SRC
 

@@ -10,9 +10,10 @@
 TERMINAL=$COLORTERM
 
 # Please set following value within absolute paths.
-CONFIG_FILE="config_shortcut"  # color, etc.
-PATH_FILE="path_shortcut"      # categories, file/dir lists
-
+#CONFIG_FILE="/path/to/config_file"  # color, etc.
+#PATH_FILE="/path/to/path_file"      # categories, file/dir lists
+CONFIG_FILE=/home/chaoxifer/bin/config_shortcut
+PATH_FILE=/home/chaoxifer/bin/path_shortcut
 VERSION="0.1"
 TRUE="1"
 FALSE="0"
@@ -340,7 +341,7 @@ while getopts "h?:v:l" opt; do
                     $TERMINAL --working-directory=${DST}
                     break;;
                 *)
-                    break;;
+                    ;;
             esac
             tput el1
             tput el
