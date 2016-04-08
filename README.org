@@ -2,30 +2,35 @@
   Simple script to use shortcuts in terminal environment.
 
 ** SCREENSHOTS
-   [[https://github.com/seokbeomKim/shell_shortcut/blob/screenshot/screenshot1.png]]
-   [[https://github.com/seokbeomKim/shell_shortcut/blob/screenshot/screenshot2.png]]
-   [[https://github.com/seokbeomKim/shell_shortcut/blob/screenshot/screenshot3.png]]
-   [[https://github.com/seokbeomKim/shell_shortcut/blob/screenshot/screenshot5.png]]
+
+*You can create your own categories to manage shortcuts in terminal environment!*
+
+[[https://github.com/seokbeomKim/shell_shortcut/blob/screenshot/shell_shortcut.gif]]
 
 ** USAGE
-*** Set *path_shortcut* file
-Put your own categories and organize shortcuts as what you want.
+*** 1. Set *path_shortcut* file
+Put your own categories and organize shortcuts as what you want like following:
 
-Example)
+#+BEGIN_SRC
 $ cat path_shortcut
 Kernel:/home/chaoxifer/workspace/LinuxKernel
 Document:/home/chaoxifer/Documents/Org
 Picture:/home/chaoxifer/Pictures/
 MY_HDD:/run/media/chaoxifer/EX_EXT4
-*** Modify *bin_shortcut* file
-In the bin_shortcut file, set values *CONFIG_FILE* and *PATH_FILE* with absolute path of 'config_shortcut' and 'path_shortcut'. 
-*** Test *bin_shortcut* 
+#+END_SRC
+
+*** 2. Modify *bin_shortcut* file
+Open *bin_shortcut* file and set values (*CONFIG_FILE* and *PATH_FILE*) to absolute path of *config_shortcut* and *path_shortcut*. 
+*** 3. Run *bin_shortcut* 
 You can move around with vim keymap (H,J,K,L). If you want to exit the script, press *q*. 
+
 #+BEGIN_SRC bash
 $ bin_shortcut -l
 #+END_SRC
-*** Set aliasa to run script easily
+
+*** 4. Set aliasa to run script easily
 If you want to run this script easily, set the alias for it like following example:
+
 #+BEGIN_SRC bash
 echo 'alias s="bin_shortcut -l"' >> ~/.zshrc # If you use bash shell, replace .zshrc to .bashrc . Also, you should make sure that bin_script is placed in $PATH directory. 
 #+END_SRC
