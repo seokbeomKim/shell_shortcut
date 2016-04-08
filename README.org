@@ -20,7 +20,7 @@ MY_HDD:/run/media/chaoxifer/EX_EXT4
 #+END_SRC
 
 *** 2. Modify *bin_shortcut* file
-In the bin_shortcut file, set values *CONFIG_FILE* and *PATH_FILE* with absolute path of 'config_shortcut' and 'path_shortcut'. 
+Open *bin_shortcut* file and set values (*CONFIG_FILE* and *PATH_FILE*) to absolute path of *config_shortcut* and *path_shortcut*. 
 *** 3. Run *bin_shortcut* 
 You can move around with vim keymap (H,J,K,L). If you want to exit the script, press *q*. 
 
