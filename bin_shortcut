@@ -48,6 +48,8 @@ Usage: $0 [-h] [-v] [-l]
 
   Move keys: vim keyboard mapping
     h: Left, j: Down, k: Up, L: Right
+
+  If you want to customize categories, please check ${PATH_FILE}.
 ";
 }
 
