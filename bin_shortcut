@@ -1,1 +1,360 @@
-/home/chaoxifer/bin/bin_shortcut
+#!/bin/bash
+# Author: Sukbeom Kim (sukbeom.kim@gmail.com)
+# This script is utility that saves frequently used directory paths. 
+# You can change or set directory paths as shortcuts with this script for terminal-
+# based environment.
+#
+# Files: bin_shortcut (shell script), path_shortcut (category, path configuration),
+#        config_shortcut (configuration file)
+
+TERMINAL=$COLORTERM
+
+# Please set following value within absolute paths.
+VERSION="0.1"
+CONFIG_FILE="config_shortcut"  # color, etc.
+PATH_FILE="path_shortcut"      # categories, file/dir lists
+
+TRUE="1"
+FALSE="0"
+
+# configuration variables
+config_item=();
+config_value=();
+
+# paths variables
+path_item=();  # categories
+path_value=(); # path
+
+categories=();
+
+current_idx=
+number_of_rows=
+number_of_cols=
+current_page=
+total_page="0";
+
+function show_help() {
+echo -e "
+SHELL SHORTCUT (version ${VERSION})
+
+Usage: $0 [-h] [-v] [-l]
+  options: 
+    -h: show this help
+    -v: check version
+    -l: show shortcuts
+
+  Move keys: vim keyboard mapping
+    h: Left, j: Down, k: Up, L: Right
+";
+}
+
+# DO NOT set this value
+rvalue=
+
+function is_comment() {
+    char=$(echo $1 | sed -e 's/\(^.\).*/\1/g');
+    if [ "${char}" == "#" ]; then
+        rvalue="${TRUE}";
+    elif [ -z "${char}" ]; then
+        rvalue="${TRUE}";
+    else
+        rvalue="${FALSE}";
+    fi
+    
+    return $rvalue;
+}
+
+function parse_config() {
+    item=$(echo $1 | sed -e 's/\(^.*\)=\(.*\)/\1/');
+    value=$(echo $1 | sed -e 's/\(^.*\)=\(.*\)/\2/');
+
+    current_count=${#config_item[@]};
+    config_item[$current_count]=$item;
+    config_value[$current_count]=$value;
+
+    if [ "$item" == "number_of_rows" ]; then
+        number_of_rows=$value;
+    elif [ "$item" == "number_of_cols" ]; then
+        number_of_cols=$value;
+    fi
+}
+
+function load_config() {
+#    echo "Load ${CONFIG_FILE}...";
+
+    while read line; do
+        is_comment "$line"
+        if [ "${rvalue}" == "${TRUE}" ]; then
+            continue;
+        fi
+        # If the line is not comment, load config
+        parse_config "$line"
+     done < ${CONFIG_FILE}
+}
+
+function parse_shortcuts() {
+    item=$(echo $1 | sed -e 's/\(^.*\):\(.*\)/\1/');
+    value=$(echo $1 | sed -e 's/\(^.*\):\(.*\)/\2/');
+
+    current_count=${#path_item[@]};
+    path_item[$current_count]=$item;
+    path_value[$current_count]=$value;
+}
+
+function load_shortcuts() {
+#    echo "Load ${PATH_FILE}...";
+
+    while read line; do
+        is_comment "$line"
+        if [ "${rvalue}" == "${TRUE}" ]; then
+            continue;
+        fi
+        # If the line is not comment, load shortcuts setting
+        parse_shortcuts "$line"
+    done < ${PATH_FILE}
+}
+
+# if category is already registered, return true
+function category_registered() {
+    for ((j=0; j < ${#categories[@]}; j++)) {
+        if [ "${categories[$j]}" == "$1" ]; then
+            # echo "category: ${categories[$j]} exists";
+            rvalue="${TRUE}";
+            return
+        fi
+    }
+}
+
+function init_categories() {
+    for ((k=0; k < ${#path_item[@]}; k++)) {
+       rvalue="${FALSE}"
+       category_registered "${path_item[$k]}";
+       if [ "$rvalue" == "${FALSE}" ]; then
+           # echo "register new category: ${path_item[$k]}";
+           categories[${#categories[@]}]="${path_item[$k]}";
+       fi
+    }
+}
+
+function refresh_page() {
+    # find number of paths included in the current category
+    total_for_cur="0";
+    current_page="0"
+
+    if [ $current_category == "0" ]; then
+        if [ $((${#path_item[@]} % $number_of_rows)) == "0" ]; then
+            total_page=$(echo "${#path_item[@]} / $number_of_rows" | bc);
+        else
+            total_page=$(echo "${#path_item[@]} / $number_of_rows + 1" | bc);
+        fi
+        return
+    else
+        cc=${categories[$current_category]}
+        for ((k=0;k<${#path_item[@]};k++)) {
+            if [ "$cc" == "${path_item[$k]}" ]; then
+                total_for_cur="$((total_for_cur+1))"
+             fi
+         }
+            
+         if [ $(echo "$total_for_cur % $number_of_rows" | bc) == "0" ]; then
+             total_page=$(echo "$total_for_cur / $number_of_rows" | bc);
+         else
+             total_page=$(echo "($total_for_cur / $number_of_rows) + 1" | bc);
+         fi
+
+    fi
+}
+
+function initialize() {
+    categories[${#categories[@]}]="All";
+
+    load_config
+    load_shortcuts
+    
+    init_categories
+
+    # clear
+    # tput cup 0 0
+}
+
+function category_prev()
+{
+    tput el
+    tput rc
+    # echo -n "category_prev $current_category to ";
+    if [ $current_category != "0" ]; then
+        current_category=$(echo "$current_category - 1" | bc)
+        refresh_page
+
+    fi
+    # echo -n "$current_category";
+}
+
+function category_next()
+{
+    tput rc
+    # echo -n "category_next $current_category to ";
+    if [ $current_category -lt $(echo "${#categories[@]} - 1" | bc) ]; then
+        current_category=$(echo "$current_category + 1" | bc)
+        refresh_page
+    fi
+    # echo -n "$current_category";
+}
+
+function shortcut_prev()
+{
+    if [ "$current_page" -gt 0 ]; then
+        current_page=$(echo "$current_page - 1" | bc)
+    fi
+}
+
+function shortcut_next() 
+{
+    if [ "$current_page" -lt $((total_page-1)) ]; then
+        current_page=$(echo "$current_page + 1" | bc)
+    fi
+}
+
+SPACE="  ";
+current_category="0";
+
+sel_arr=();
+function draw_frame() {
+    #clear
+    tput civis
+    #tput cup 1 0
+    tput ed
+    # Draw categories
+    for ((i=0;i<${#categories[@]};i++)) {
+        if [ "$i" == "$current_category" ]; then
+            tput rev
+            echo -ne "${SPACE}${categories[$i]}${SPACE}";
+        else
+            tput sgr0
+            echo -ne "${SPACE}${categories[$i]}${SPACE}";
+        fi
+    }
+
+    # draw shortcuts
+    tput sgr0
+    tput rc
+    tput cud 1
+    tput ed
+
+    
+    loop_cnt="${#path_item[@]}";
+    if [ "$loop_cnt" -gt "$number_of_rows" ]; then
+        loop_cnt=$number_of_rows;
+    fi
+
+    sel_arr=();
+    #echo "loop_cnt = $loop_cnt";
+    #echo "current_page = $current_page";
+    #echo ${path_value[@]};
+    cnt=0;
+
+    for ((j=0;j<${#path_item[@]};j++)) {
+         idx=$(echo "($j + ($current_page * $number_of_rows))" | bc);
+         if [ "${path_item[$idx]}" == "${categories[$current_category]}" ]; then
+             sel_arr[${#sel_arr[@]}]=${path_value[$idx]};
+             echo "${#sel_arr[@]} ${path_value[$idx]}";
+             cnt=$(echo "$cnt + 1" | bc);
+         elif [ "${categories[$current_category]}" == "All" ]; then
+             sel_arr[${#sel_arr[@]}]=${path_value[$idx]};
+             if [ -z ${path_value[$idx]} ]; then
+                 return
+             fi
+             echo "${#sel_arr[@]} ${path_value[$idx]}";
+             cnt=$(echo "$cnt + 1" | bc);             
+         fi
+         
+         if [ $cnt == "$loop_cnt" ]; then
+             break;
+         fi
+    }
+
+    # draw page number
+    # current category's number of shortcuts
+    shortcuts_num=${#sel_arr[@]}
+    
+    echo "";
+    echo "$((current_page+1)) / $total_page";
+
+    tput el
+}
+
+if [ $# -lt 1 ]; then
+    show_help
+    exit 0
+fi
+
+while getopts "h?:v:l" opt; do
+    case "$opt" in
+    h|\?)
+        show_help
+        exit 0
+        ;;
+    v)  
+        # Show version information
+        VERSION="$OPTARG"
+        
+        ;;
+    l)
+        # Load configurations (PATH, CONFIG)
+        initialize
+
+        for ((i=0;i<$number_of_rows;i++)) { echo ""; }
+        tput cup $number_of_cols
+
+        tput sc
+
+        refresh_page
+
+        draw_frame        
+
+        while IFS= read -r -n1 input
+        do
+
+            case $input in 
+                [hH])
+                    category_prev
+                    ;;
+                [lL])
+                    category_next
+                    ;;
+                [jJ])
+                    shortcut_next
+                    ;;
+                [kK])
+                    shortcut_prev
+                    ;;
+                [qQ])
+                    echo "";
+                    break;;
+                [1-9])
+                    echo ""
+                    # change ${PWD} to selected path
+                    
+                    DST=${sel_arr[$(echo $input - 1 | bc)]};
+                    # echo "DST = $DST"
+                    $TERMINAL --working-directory=${DST}
+                    break;;
+                *)
+                    break;;
+            esac
+            tput el1
+            tput el
+            draw_frame
+        done
+        tput rc
+        tput cnorm
+        exit 0
+        ;;
+    *)
+        show_help
+        tput rc
+        tput cnorm
+        exit 1
+        ;;
+    esac
+done

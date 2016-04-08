@@ -1,1 +1,3 @@
-/home/chaoxifer/bin/config_shortcut
+# Configuration file for shortcut script
+number_of_rows=10
+number_of_cols=3

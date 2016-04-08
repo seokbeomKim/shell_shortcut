@@ -1,0 +1,10 @@
+* SHELL SHORTCUT
+  Simple shell script to use shortcuts in terminal environment.
+
+** Files
+   - bin_shortcut: main script file
+   - config_shortcut: configuration file
+   - path_shortcut: shorcuts list
+
+** Usage
+
