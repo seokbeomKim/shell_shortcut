@@ -10,10 +10,10 @@
 TERMINAL=$COLORTERM
 
 # Please set following value within absolute paths.
-VERSION="0.1"
 CONFIG_FILE="config_shortcut"  # color, etc.
 PATH_FILE="path_shortcut"      # categories, file/dir lists
 
+VERSION="0.1"
 TRUE="1"
 FALSE="0"
 

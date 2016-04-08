@@ -1,12 +1,13 @@
 # Category:Path Settings
 
+# Category:Path
 Kernel:/home/chaoxifer/workspace/LinuxKernel
 Kernel:/home/chaoxifer/3rdPkg/DART4460
 Document:/home/chaoxifer/Documents/Org
-Kernel:/run/media/chaoxifer/EX_EXT4/DART4460/AOSP_modified1
-Kernel:/run/media/chaoxifer/EX_EXT4/DART4460/AOSP_modified2
-Kernel:/run/media/chaoxifer/EX_EXT4/DART4460/AOSP_modified3
-Kernel:/run/media/chaoxifer/EX_EXT4/DART4460/AOSP_modified4
+Picture:/home/chaoxifer/Pictures/
+Work:/run/media/chaoxifer/EX_EXT4/DART4460/AOSP_modified2
+Project_A:/run/media/chaoxifer/EX_EXT4/DART4460/AOSP_modified3
+Project_B:/run/media/chaoxifer/EX_EXT4/DART4460/AOSP_modified4
 Kernel:/run/media/chaoxifer/EX_EXT4/DART4460/AOSP_modified5
 Kernel:/run/media/chaoxifer/EX_EXT4/DART4460/AOSP_modified6
 Kernel:/run/media/chaoxifer/EX_EXT4/DART4460/AOSP_modified7
