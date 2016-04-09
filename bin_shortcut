@@ -258,18 +258,29 @@ function draw_frame() {
     #echo ${path_value[@]};
     cnt=0;
 
+    pass_cnt=$(echo "($current_page * $number_of_rows)" | bc);
     for ((j=0;j<${#path_item[@]};j++)) {
-         idx=$(echo "($j + ($current_page * $number_of_rows))" | bc);
-         if [ "${path_item[$idx]}" == "${categories[$current_category]}" ]; then
-             sel_arr[${#sel_arr[@]}]=${path_value[$idx]};
-             echo "${#sel_arr[@]} ${path_value[$idx]}";
+
+         if [ "${path_item[$j]}" == "${categories[$current_category]}" ]; then
+             if [ $pass_cnt != "0" ]; then
+                 pass_cnt=$((pass_cnt-1))
+                 continue;
+             fi
+
+             sel_arr[${#sel_arr[@]}]=${path_value[$j]};
+             echo "${#sel_arr[@]} ${path_value[$j]}";
              cnt=$(echo "$cnt + 1" | bc);
          elif [ "${categories[$current_category]}" == "All" ]; then
-             sel_arr[${#sel_arr[@]}]=${path_value[$idx]};
-             if [ -z ${path_value[$idx]} ]; then
+             if [ $pass_cnt != "0" ]; then
+                 pass_cnt=$((pass_cnt-1))
+                 continue;
+             fi
+
+             sel_arr[${#sel_arr[@]}]=${path_value[$j]};
+             if [ -z ${path_value[$j]} ]; then
                  return
              fi
-             echo "${#sel_arr[@]} ${path_value[$idx]}";
+             echo "${#sel_arr[@]} ${path_value[$j]}";
              cnt=$(echo "$cnt + 1" | bc);             
          fi
          
