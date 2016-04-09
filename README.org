@@ -28,7 +28,7 @@ You can move around with vim keymap (H,J,K,L). If you want to exit the script, p
 $ bin_shortcut -l
 #+END_SRC
 
-*** 4. Set aliasa to run script easily
+*** 4. Set alias to run script easily
 If you want to run this script easily, set the alias for it like following example:
 
 #+BEGIN_SRC bash
