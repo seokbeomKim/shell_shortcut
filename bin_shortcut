@@ -268,6 +268,8 @@ function draw_frame() {
     #echo ${path_value[@]};
     cnt=0;
 
+    set_error=$(tput setaf 1)
+    set_restore=$(tput sgr0)
     pass_cnt=$(echo "($current_page * $number_of_rows)" | bc);
     for ((j=0;j<${#path_item[@]};j++)) {
 
@@ -276,12 +278,12 @@ function draw_frame() {
                  pass_cnt=$((pass_cnt-1))
                  continue;
              fi
-
+             
              sel_arr[${#sel_arr[@]}]=${path_value[$j]};
              if [ -d ${path_value[$j]} ]; then
                  echo "[${#sel_arr[@]}] ${path_value[$j]}";
              else
-                 echo "[${#sel_arr[@]}] [NOT AVAILABLE] ${path_value[$j]}";
+                 echo "[${#sel_arr[@]}] [${set_error}NOT AVAILABLE${set_restore}] ${path_value[$j]}";
              fi
 
              cnt=$(echo "$cnt + 1" | bc);
@@ -299,7 +301,7 @@ function draw_frame() {
              if [ -d ${path_value[$j]} ]; then
                  echo "[${#sel_arr[@]}] ${path_value[$j]}";
              else
-                 echo "[${#sel_arr[@]}] [NOT AVAILABLE] ${path_value[$j]}";
+                 echo "[${#sel_arr[@]}] [${set_error}NOT AVAILABLE${set_restore}] ${path_value[$j]}";
              fi
              cnt=$(echo "$cnt + 1" | bc);             
          fi
